@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+{% block title %}Records by Magnitude & Depth Range{% endblock %}
+{% block content %}
+<div class="container-fluid" style="border: 1px solid #000000; padding: 10px;">
+  {% if form != Null %}
+    <div class="form-group">
+      <form action="/txt6312_Graph_By_Records_Comp_Mag_VS_Depth" method="POST">
+        {{ form.csrf_token() }}
+        <div class="row">
+          <div class="col-md-6">
+            <label for="{{ form.m1.id_for_label }}">Lower Range of Magnitude:</label>
+            {{ form.m1 }}<br/>
+          </div>
+          <div class="col-md-6" allign=right>
+            <label for="{{ form.d1.id_for_label }}">Lower Range of Depth:</label>
+            {{ form.d1 }}<br/>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-6">
+            <label for="{{ form.m2.id_for_label }}">Upper Range of Magnitude:</label>
+            {{ form.m2 }}<br/>
+          </div>
+          <div class="col-md-6" allign=right>
+            <label for="{{ form.d2.id_for_label }}">Upper Range of Depth:</label>
+            {{ form.d2 }}<br/>
+          </div>
+        </div>
+        <center>{{ form.submit(style="background-color: purple; color: #ffffff; border-color: purple;", class="btn btn-primary") }}</center>
+      </form>
+    </div>
+  {% endif %}
+  {% if error %}
+    <b>{{ error }}</b>
+  {% endif %}
+  {% if data == 1 %}
+    <b>Total No. of Records: {{ cnt }}</b><br/><br/>
+  {% if elapsed_time %}
+    <b><p>Time Elapsed To Perform This Query : {{ elapsed_time }} seconds</p></b>
+  {% endif %}
+
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+      google.charts.load('current', {'packages':['corechart']});
+      google.charts.setOnLoadCallback(drawChart);
+    
+      function drawChart() {
+        var data = google.visualization.arrayToDataTable([
+          ['Magnitude', 'Magnitude, Depth'],
+          {% for k,v in result.items() %}
+            [{{ v[0] }},{{ v[1] }}],
+          {% endfor %}
+        ]);
+    
+        var options = {
+          title: 'Comparison of Mag VS Depth using Scatter Plot Graph',
+          hAxis: {title: 'Magnitude', minValue: {{ m1 }}, maxValue: {{ m2 }} + 1},
+          vAxis: {title: 'Depth', minValue: {{ d1 }} - 1, maxValue: {{ d2 }} + 1},
+          legend: 'none',
+          pointSize: 5,
+          colors: ['black']
+        };
+    
+        var chart = new google.visualization.ScatterChart(document.getElementById('graph'));
+    
+        chart.draw(data, options);
+      }
+    </script>
+    
+    <div id="graph" class="container-small" style="width: 100%; height: 500px;"></div>
+
+  {% endif %}
+</div>
+{% endblock %}

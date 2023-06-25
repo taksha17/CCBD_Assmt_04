@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}{% endblock %}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #f6f6f6;
+        }
+
+        .table-container {
+            margin-top: 20px;
+        }
+
+        .table {
+            background-color: #ffffff;
+            border-radius: 5px;
+        }
+
+        .table th {
+            background-color: #6f42c1;
+            color: #ffffff;
+            border: none;
+        }
+
+        .table td {
+            border: none;
+        }
+
+        .table td a {
+            color: #6f42c1;
+            text-decoration: none;
+        }
+
+        .table td a:hover {
+            color: #6f42c1;
+            text-decoration: underline;
+        }
+
+        .jumbotron {
+            background-color: #6f42c1;
+            color: #ffffff;
+            margin-bottom: 20px;
+            padding: 20px;
+        }
+
+        h3 {
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="jumbotron text-center">
+            <h3>Taksha S Thosani --- 1002086312 --- CSE6332 --- Summer'23 --- 002 --- Assigment 04</h3>
+        </div>
+        <div class="table-container">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Page Functionalities</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><a href="/">Home</a></td>
+                    </tr>
+                    <tr>
+                        <td><a href="/txt6312_Show_By_Magnitude">Display The Earthquake Records Organized By Magnitude</a></td>
+                    </tr>
+                    <tr>
+                        <td><a href="/txt6312_Display_The_EQRecords_By_Mag_Depth_Ranges">Display The EQ Magnitude Records by Depth Ranges</a></td>
+                    </tr>
+                    <tr>
+                        <td><a href="/txt6312_Graph_By_Records_Comp_Mag_VS_Depth">Graph of Recent Earthquake Records by Magnitude & Depth Range "Recently" </a></td>
+                    </tr>
+                    <tr>
+                        <td><a href="/txt6312_Mag_Records_By_Categories">Magnitude Records by Category</a></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        {% block content %}
+        {% endblock %}
+    </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+</body>
+</html>

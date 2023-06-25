@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% block title %}Magnitude Records by Category{% endblock %}
+{% block content %}
+<div class="container-fluid" style="border: 1px solid #000000; padding: 10px;">
+    <div class="form-group">
+        <form action="/txt6312_Mag_Records_By_Categories" method="POST">
+            {{ form.csrf_token }}
+            <label for="{{ form.type.id }}"><center>Select Category from the drop down below :- </center></label>
+            {{ form.type(class="form-control") }}<br/>
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+    </div>
+
+    {% if error %}
+    <b>{{ error }}</b>
+    {% endif %}
+    {% if data == 1 %}
+    <b>Total No. of Records: {{ cnt }}</b><br/><br/>
+    <b>Elapsed Time: {{ elapsed_time }} seconds</b><br/><br/>
+
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+      google.charts.load("current", {packages:["corechart"]});
+      google.charts.setOnLoadCallback(drawChart);
+      function drawChart() {
+          var data = google.visualization.arrayToDataTable([
+              ['Magnitude Type', 'Magnitude Value'],
+              {% for k,v in result.items() %}
+                  ['{{ k }}', {{ v }}],
+              {% endfor %}
+          ]);
+  
+          var options = {
+              title: 'Magnitude Records by Category - {{ type }}',
+              pieHole: 0.4,
+              colors: ['violet', 'indigo', 'blue', 'green', 'yellow', 'orange', 'red']
+          };
+  
+          var chart = new google.visualization.PieChart(document.getElementById('graph'));
+          chart.draw(data, options);
+      }
+  </script>
+  
+    <div id="graph" class="container-small" style="width: 100%; height: 500px;"></div>
+    {% endif %}
+</div>
+{% endblock %}

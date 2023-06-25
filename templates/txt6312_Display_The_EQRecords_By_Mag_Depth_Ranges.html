@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+{% block title %}Records by Depth Range{% endblock %}
+{% block content %}
+<div class="container-fluid" style="border: 1px solid #000000; padding: 10px;">
+{% if form != Null %}
+    <div class="form-group">
+        <form action="/txt6312_Display_The_EQRecords_By_Mag_Depth_Ranges" method="POST">
+            {{ form.csrf_token() }}
+            {{ form.d1.label }} {{ form.d1 }}<br/>
+            {{ form.d2.label }} {{ form.d2 }}<br/>
+            <button class="custom-button" type="submit">Submit</button>
+        </form>
+    </div>
+{% endif %}
+{% if error %}
+    <b>{{ error }}</b>
+{% endif %}
+  {% if execution_time %}
+    <b><p>Execution Time for this query: {{ execution_time }} seconds</p></b>
+  {% endif %}
+{% if data == 1 %}
+    <b>No. of Available ranges: {{ result|length }}</b><br/>
+    <b>Total No. of Records for the provided range: {{ cnt }}</b><br/><br/>
+
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+      google.charts.load('current', {'packages':['bar']});
+      google.charts.setOnLoadCallback(drawChart);
+
+      function drawChart() {
+        var data = google.visualization.arrayToDataTable([
+          ['Magnitude', 'Total No. of Records', { role: 'style' } ],
+          {% for k,v in result.items() %}
+            ['{{ k }}',{{ v }}, get_color({{ loop.index }})],
+          {% endfor %}
+        ]);
+
+        var options = {
+          chart: {
+            title: 'Record by Magnitude between Depth Range of {{ d1 }} and {{ d2 }}.'
+          }
+        };
+
+        var chart = new google.charts.Bar(document.getElementById('graph'));
+
+        chart.draw(data, google.charts.Bar.convertOptions(options));
+      }
+
+      function get_color(index) {
+        var colors = ['#9400D3', '#4B0082', '#0000FF', '#008000', '#FFFF00', '#FFA500', '#FF0000'];
+        return colors[(index - 1) % colors.length];
+      }
+    </script>
+
+    <div id="graph" class="container-small" style="width: 100%; height: 500px;"></div>
+
+{% endif %}
+</div>
+<style>
+    .custom-button {
+        background-color: #6f42c1;
+        color: #ffffff;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+
+    .custom-button:hover {
+        background-color: #5a338c;
+    }
+</style>
+{% endblock %}
