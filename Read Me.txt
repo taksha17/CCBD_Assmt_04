@@ -1,0 +1,7 @@
+Author : Taksha S Thosani
+Student Id : 1002086312
+
+Python stack version : 3.11
+
+
+Cloud Link for the app : https://txt6312ccbdassmt04.azurewebsites.net/
